@@ -12,8 +12,8 @@ data = pd.read_csv("./assets/Factorio Science - Dependencies.csv")
 def main(TIMECONSTANT=1, save=True, name="out", outdir="./output/"):
 
     # Create Graph
-    G = nx.DiGraph()
-    G.graph['graph']={'rankdir':'LR'}
+    G = nx.DiGraph(TIMECONSTANT=1)
+    G.graph['graph']={'rankdir':'LR','label':"Time Constant: {}s".format(TIMECONSTANT)}
     
     # Add nodes to Graph with data
     node_data = data[["Parent","Time","Output"]]
@@ -67,9 +67,9 @@ def main(TIMECONSTANT=1, save=True, name="out", outdir="./output/"):
     for n in G.nodes():
         G.node[n]["QuantityNeeded"] = how_many_do_i_need(n)
         if "QuantityOut" in G.node[n]:
-            timePer = (G.node[n]["QuantityOut"]/G.node[n]["Time"])*TIMECONSTANT
-            G.node[n]["QuantityPer"]=timePer
-            G.node[n]["FactoriesNeeded"] = 1./((1./G.node[n]["QuantityNeeded"])*(timePer))
+            quantPer = (G.node[n]["QuantityOut"]/G.node[n]["Time"])*TIMECONSTANT
+            G.node[n]["QuantityPer"]=quantPer
+            G.node[n]["FactoriesNeeded"] = 1./((1./G.node[n]["QuantityNeeded"])*(quantPer))
         #if "Time" in G.node[n]:
         #    del G.node[n]["Time"]
         
@@ -97,13 +97,31 @@ def main(TIMECONSTANT=1, save=True, name="out", outdir="./output/"):
         
     ## Output
     if save:
-        from networkx.drawing.nx_pydot import write_dot
-        from subprocess import call
-        write_dot(G,outdir+name+".dot")
-        call(["dot", "-Tpng", outdir+name+".dot", "-o", outdir+name+".dot.png"])
-        call(["dot", "-Tpdf", outdir+name+".dot", "-o", outdir+name+".dot.pdf"])
-    
+        save_graph(G, name=name, outdir=outdir)
+        
     return G
+    
+def save_graph(G, name="out", outdir="./output/"):
+    """ Draws and saves a graph. """
+    from networkx.drawing.nx_pydot import write_dot
+    from subprocess import call
+    import os
+    if not os.path.exists(outdir+name+"/"):
+        os.makedirs(outdir+name+"/")
+    write_dot(G,outdir+name+"/"+name+".dot")
+    call(["dot", "-Tpng", outdir+name+"/"+name+".dot", "-o", outdir+name+"/"+name+".png"])
+    call(["dot", "-Tpdf", outdir+name+"/"+name+".dot", "-o", outdir+name+"/"+name+".pdf"])
 
+def min_one_factory_optimize(save=True, name="out", outdir="./output/"):
+    """ Chooses a time constant which would have the minimum number of factories precisely equal 1. """
+    G = main(TIMECONSTANT=1,save=False)
+    num_factories = [G.node[n]["FactoriesNeeded"] for n in G.nodes() if "FactoriesNeeded" in G.node[n]]
+    out = G.graph["TIMECONSTANT"]*float(min(num_factories))
+    return main(out, save=save, name=name, outdir=outdir)
+    
 if __name__=="__main__":
-    main(TIMECONSTANT=60)
+    main()
+    
+    print("Calculate Based on a perfect supply flow.")
+    min_one_factory_optimize(name="min_factories")
+    
