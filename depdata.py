@@ -57,6 +57,7 @@ def main(TIMECONSTANT=1, save=True, name="out", outdir="./output/"):
         for n in customers:
             quantity_per = G.edge[node][n]["QuantityPer"]
             total += quantity_per * how_many_do_i_need(n)
+        G.node[node]["QuantityNeeded"] = total # That way we don't recalculate anything unnecessarily
         return total
     
     # TODO: Instead, get the nodes which have no parents algorithmically
@@ -65,7 +66,7 @@ def main(TIMECONSTANT=1, save=True, name="out", outdir="./output/"):
         G.node[n]["QuantityNeeded"] = 1
     
     for n in G.nodes():
-        G.node[n]["QuantityNeeded"] = how_many_do_i_need(n)
+        how_many_do_i_need(n)
         if "QuantityOut" in G.node[n]:
             quantPer = (G.node[n]["QuantityOut"]/G.node[n]["Time"])*TIMECONSTANT
             G.node[n]["QuantityPer"]=quantPer
@@ -120,7 +121,7 @@ def min_one_factory_optimize(save=True, name="out", outdir="./output/"):
     return main(out, save=save, name=name, outdir=outdir)
     
 if __name__=="__main__":
-    main()
+    main(60)
     
     print("Calculate Based on a perfect supply flow.")
     min_one_factory_optimize(name="min_factories")
