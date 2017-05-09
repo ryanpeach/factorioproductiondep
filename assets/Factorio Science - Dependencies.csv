@@ -1,0 +1,34 @@
+Parent,Child 1,Amount 1,Child 2,Amount 2,Child 3,Amount 3,Time,Output
+Science Pack 1,Copper Plate,1,Iron Gear Wheel,1,,,5,1
+Science Pack 2,Inserter,1,Transport Belt,1,,,6,1
+Science Pack 3,Electric Mining Drill,1,Advanced Circuit,1,Engine Unit,1,12,1
+Military Science Pack,Piercing rounds magazine,1,Grenade,1,Gun Turret,1,10,2
+Production Science Pack,Assembling machine 1,1,Electric engine unit,1,Electric furnace,1,14,2
+High Tech Science Pack,Battery,1,Speed Module,1,Processing unit,1,14,2
+Copper Plate,Copper Ore,1,,,,,3.5,1
+Iron Plate,Iron Ore,1,,,,,3.5,1
+Plastic Bar,Coal,1,Petrolium Gas,20,,,1,2
+Stone Brick,Stone Ore,2,,,,,3.5,1
+Steel Plate,Iron Plate,5,,,,,17.5,1
+Battery,Copper Plate,1,Iron Plate,1,Sulfuric Acid,20,5,1
+Iron Gear Wheel,Iron Plate,2,,,,,0.5,1
+Inserter,Electronic Circuit,1,Iron Plate,1,Iron Gear Wheel,1,3.5,1
+Transport Belt,Iron Plate,1,Iron Gear Wheel,1,,,0.5,2
+Electric Mining Drill,Electronic Circuit,3,Iron Gear Wheel,5,Iron Plate,10,2,1
+Advanced Circuit,Copper Wire,4,Electronic Circuit,2,Plastic Bar,2,6,1
+Engine Unit,Iron Gear Wheel,1,Pipe,2,Steel Plate,1,10,1
+Electronic Circuit,Copper Wire,3,Iron Plate,1,,,0.5,1
+Copper Wire,Copper Plate,1,,,,,0.5,2
+Pipe,Iron Plate,1,,,,,0.5,1
+Assembling machine 1,Electronic Circuit,3,Iron Gear Wheel,5,Iron Plate,9,0.5,1
+Electric engine unit,Electronic Circuit,2,Engine Unit,1,Lubricant,15,10,1
+Electric furnace,Advanced Circuit,5,Steel Plate,10,Stone Brick,10,5,1
+Piercing rounds magazine,Copper Plate,5,Firearm magazine,1,Steel Plate,1,3,1
+Grenade,Coal,10,Iron Plate,5,,,8,1
+Gun Turret,Copper Plate,10,Iron Gear Wheel,10,Iron Plate,20,8,1
+Speed Module,Advanced Circuit,5,Electronic Circuit,5,,,15,1
+Processing unit,Advanced Circuit,2,Electronic Circuit,20,Sulfuric Acid,5,10,1
+Firearm magazine,Iron Plate,4,,,,,1,1
+Lubricant,Heavy Oil,10,,,,,1,10
+Sulfuric Acid,Iron Plate,1,Sulfur,5,Water,100,1,50
+Sulfur,Petrolium Gas,30,Water,30,,,1,2
