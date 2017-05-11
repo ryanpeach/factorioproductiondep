@@ -9,6 +9,12 @@ import math
 # Import Data
 data = pd.read_csv("./assets/Factorio Science - Dependencies.csv")
 
+# Make everything title case
+data["Parent"]  = data["Parent"].str.title()
+data["Child 1"] = data["Child 1"].str.title()
+data["Child 2"] = data["Child 2"].str.title()
+data["Child 3"] = data["Child 3"].str.title()
+
 def main(TIMECONSTANT=1, save=True, name="out", outdir="./output/"):
 
     # Create Graph
@@ -102,11 +108,29 @@ def main(TIMECONSTANT=1, save=True, name="out", outdir="./output/"):
         
     return G
     
-def save_graph(G, name="out", outdir="./output/"):
+def save_graph(G, name="out", outdir="./output/", nlabels=True, elabels=True):
     """ Draws and saves a graph. """
     from networkx.drawing.nx_pydot import write_dot
     from subprocess import call
     import os
+    G = G.copy()
+    
+    # Add node labels
+    if nlabels:
+        for n in G.nodes():
+            G.node[n]["label"] = str(list(n))
+            for k, v in G.node[n].items():
+                if k != "label":
+                    G.node[n]["label"] += "\n" + str(k) + ": " + str(v)
+    
+    # Add edge labels
+    if elabels:
+        for n1, n2 in G.edges():
+            G.edge[n1][n2]["label"] = ""
+            for k, v in G.edge[n1][n2].items():
+                if k != "label":
+                    G.edge[n1][n2]["label"] += str(k) + ": " + str(v) + "\n"
+                
     if not os.path.exists(outdir+name+"/"):
         os.makedirs(outdir+name+"/")
     write_dot(G,outdir+name+"/"+name+".dot")
@@ -121,7 +145,7 @@ def min_one_factory_optimize(save=True, name="out", outdir="./output/"):
     return main(out, save=save, name=name, outdir=outdir)
     
 if __name__=="__main__":
-    main(60)
+    main(16)
     
     print("Calculate Based on a perfect supply flow.")
     min_one_factory_optimize(name="min_factories")
