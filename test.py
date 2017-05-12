@@ -85,6 +85,39 @@ class TestBus(unittest.TestCase):
             assert b in D.nodes(), "Test Setup Error: {} not in D".format(b)
         self.assertEqual(out, set())
         
+    def test_trim_path(self):
+        # If this fails normal operation has failed
+        test_path = [["Iron Plate", "Water", "Petrolium Gas"],
+                     ["Iron Plate", "Water", "Petrolium Gas","Sulfur"],
+                     ["Iron Plate", "Water", "Petrolium Gas","Sulfur","Sulfuric Acid"]]
+        test_path = [frozenset(p) for p in test_path]
         
+        goal_path = [["Iron Plate", "Water", "Petrolium Gas"],
+                     ["Iron Plate", "Water", "Sulfur"],
+                     ["Sulfuric Acid"]]
+        goal_path = [frozenset(p) for p in goal_path]
+        G0 = frozenset(goal_path[-1])
+        
+        out = trim_path(test_path, G0)
+        self.assertListEqual(out, goal_path, "Abnormal Operation")
+        
+        # If this fails, it has failed to detect the input does not actually reach goal
+        test_path = [["Copper Wire", "Water", "Petrolium Gas","Copper Plate"],
+                     ["Copper Wire", "Water", "Petrolium Gas","Sulfur"],
+                     ["Copper Wire", "Water", "Petrolium Gas","Sulfur","Sulfuric Acid"]]
+        test_path = [frozenset(p) for p in test_path]
+        
+        with self.assertRaises(AssertionError):
+            trim_path(test_path, G0)
+        
+        # If this fails it can not seem to remove totally unnecessary items
+        test_path = [["Iron Plate", "Water", "Petrolium Gas","Copper Plate"],
+                     ["Iron Plate", "Water", "Petrolium Gas","Copper Plate","Sulfur"],
+                     ["Iron Plate", "Water", "Petrolium Gas","Copper Plate","Sulfur","Sulfuric Acid"]]
+        test_path = [frozenset(p) for p in test_path]
+        
+        out = trim_path(test_path, ["Sulfuric Acid"])
+        self.assertListEqual(out, goal_path, "Failed to remove original unneccesary item Copper Plate")
+                     
 if __name__ == '__main__':
     unittest.main()
